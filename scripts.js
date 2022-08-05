@@ -1,52 +1,120 @@
 class Catalog{
-    API_URL = "https://fakestoreapi.com/products";
-    
-    constructor(){
-        this.product_data = [];
-        this.products = {};
-        this.load_product_from_api();
-    }
+	constructor(){
 
-    load_product_from_api(){
-        fetch('https://fakestoreapi.com/products')
-            .then(res=>res.json())
-            .then(json=>{
-                this.product_data = json;
-
-                for(let product of json){
-                    let product_id = product.id;
-                    this.products[product_id] = product;
-                }
-            });
-
-            this.render_catalog();
-    }
-
-    render_catalog(){
-        jQuery("#catalog").html("");
-        for (let product of this.product_data){
-            let {id, title, description, image, price} = product;
-            
-            let html = `<div class = "col-sm-6 col-lg-4 mb-4"> 
-            <div class = "card"> 
-                <img src = "${image}" alt = "${title}">
-                <div class = "card-body">
-                <h5 class = "card-title>${title}</h5>
-                <p class = "card-text">${description} </p>
-                <p class = "price"> ${price}</p>
-                <button class = " btn btn-success add-to-cart-button" data-id = "${id}">Add To Card </button>
-            </div>
-            </div>
-            </div>`;
-            
-        jQuery(html).appendTo("#catalog")
-        }
-
-    }
-
-    
-
-  
+	}
 }
 
-let catalog = new Catalog;
+let catalog = new Catalog();
+
+
+/**Payment Method **/
+
+$("#checkout-btn").click(function(){
+	$("#payment-method").show();
+});
+
+
+$("#pay").click(function(){
+	$("#payment-method").show();
+	$("#billing-details").hide();
+	$("#shipping-details").hide();
+	$("#confirm-order").hide();
+});
+
+$("#bill").click(function(){
+	$("#payment-method").hide();
+	$("#billing-details").show();
+	$("#shipping-details").hide();
+	$("#confirm-order").hide();
+});
+
+
+$("#ship").click(function(){
+	$("#payment-method").hide();
+	$("#billing-details").hide();
+	$("#confirm-order").hide();
+	$("#shipping-details").show();
+});
+
+$("#order").click(function(){
+	$("#payment-method").hide();
+	$("#billing-details").hide();
+	$("#shipping-details").hide();
+	$("#confirm-order").show();
+});
+
+
+/**Validate Credit Card**/
+function validate(value, id){
+
+	if(value == "" || value == undefined){
+			$(id).addClass("is-invalid");
+			$(id).removeClass("is-valid");
+			$('#payment-continue').attr("disabled", "true");
+	}else{
+			$(id).addClass("is-valid");
+			$(id).removeClass("is-invalid");
+	}
+}
+
+$("#payment-continue").click(function(){
+		/**Name**/
+		let name = $("#name").val();
+		let nameID = document.querySelector("#name");
+		validate(name, nameID);
+
+		/**Card**/
+		let cardNum = $("ccnumber").val();
+		let cardID = document.querySelector("#ccnumber");
+		
+		validate(cardNum, cardID);
+		console.log(cardNum);
+		
+
+		/**year**/
+		let today = new Date();
+
+		let cardyear = $("#ccyear").val();
+		let expYear = parseInt(cardyear);
+		let year = today.getFullYear();
+
+		/**Month**/
+		let cardmonth = $("#ccmonth").val();
+		let month = today.getMonth();
+		let expMonth = parseInt(cardmonth);
+
+
+		if(expYear >= year && expMonth >= month ){
+			$("#ccyear").addClass("is-valid");
+			$("#ccyear").removeClass("is-invalid");
+
+			$("#ccmonth").addClass("is-valid");
+			$("#ccmonth").removeClass("is-invalid");
+		}else{
+			$("#ccyear").addClass("is-invalid");
+			$("#ccyear").removeClass("is-valid");
+
+			$("#ccmonth").addClass("is-invalid");
+			$("#ccmonth").removeClass("is-valid");
+		}
+
+		
+		$("#billing-details").show();
+		$("#payment-method").hide();
+	
+
+});
+
+
+$("#billing-continue").click(function(){
+
+		let name = $("#name").val();
+		let nameID = document.querySelector("#name");
+		validate(name, nameID);
+
+
+		$("#billing-details").hide();
+		$("#shiiping-details").show();
+	
+
+});
