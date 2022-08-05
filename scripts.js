@@ -4,6 +4,8 @@ class Catalog{
     constructor{
         this.products = [];
     }
+
+  
 }
 
 let catalog = new Catalog;
