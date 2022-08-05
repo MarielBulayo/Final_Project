@@ -4,18 +4,217 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Bootstrap CSS only -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
     <title>ICS 128 Final Project</title>
+
+   
   </head>
 
   <body>
+    <!--Start-->
+    <main >
+   <h1> Final Project</h1>
+         <button id="view-cart" class="btn btn-primary right" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i class="bi bi-cart2"></i> View Cart</button>
+
+      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Cart</h5>
+          
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" id="shopping-cart-contents">
+          
+        </div>
+        <div>
+         
+        
+        
+        
+        
+        <!-- Button trigger modal -->
+          <button type="button" id="checkout" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Checkout
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  
+                  <div id="checkout-modal" >
+                    <a href="#payment-method" class ="btn btn-outline-primary" id="pay"> <i class="bi bi-credit-card"></i> Payment Method</a>
+                    <a href="#billing-details" class ="btn btn-outline-primary" id="billing-address"> <i class="bi bi-pip"></i> Billing Details</a>
+                    <a href="#shipping-details" class ="btn btn-outline-primary" id="ship"> <i class="bi bi-truck"></i>Shipping Details</a>
+                    <a href="#confirm-order" class ="btn btn-outline-primary" id="order"> <i class="bi bi-patch-check"></i> Order Confirmation</a>
+                    
+                  </div>
+                  <hr class="mb-5">
+                  <!-- Payment Method -->
+                  <div id="payment-method">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="cc-name">Name on card</label>
+                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                        <small class="text-muted">Full name as displayed on card</small>
+                        <div class="invalid-feedback">
+                          Name is not valid
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="cc-number">Credit card number</label>
+                        <input type="text" class="form-control" id="cc-number" placeholder="" required="">
+                        <div class="invalid-feedback">
+                          Credit card invalid
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3 mb-3">
+                        <label for="cc-expiration">Expiration</label>
+                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
+                        <div class="invalid-feedback">
+                          Your card is expired
+                        </div>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label for="cc-expiration">CVV</label>
+                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+                        <div class="invalid-feedback">
+                          Security code invalid
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button"  class="btn btn-primary right" id="continue1">Continue </button>
+                </div>
+
+                <!-- Billing Details -->
+                <div id="billing-details">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="firstName">First name</label>
+                      <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                      <div class="invalid-feedback">
+                        Valid first name is required.
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="lastName">Last name</label>
+                      <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+                      <div class="invalid-feedback">
+                        Valid last name is required.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                    <div class="invalid-feedback">
+                      Please enter a valid email address for shipping updates.
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                    <div class="invalid-feedback">
+                      Please enter your shipping address.
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                    <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-5 mb-3">
+                      <label for="country">Country</label>
+                      <select class="custom-select d-block w-100" id="country" required>
+                        <option value="">Choose...</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please select a valid country.
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label for="state">State</label>
+                      <select class="custom-select d-block w-100" id="state" required>
+                        <option value="">Choose...</option>
+                        <option>California</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <label for="zip">Zip</label>
+                      <input type="text" class="form-control" id="zip" placeholder="" required="">
+                      <div class="invalid-feedback">
+                        Zip code required.
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button"  class="btn btn-primary right" id="continue2">Continue </button>
+                </div>
+
+                  <!-- Shipping Details -->
+                <div id="shipping-details">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="same-address">
+                    <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
+                  </div>
+                  <button type="button" class="btn btn-primary right" id="continue3">Continue </button>
+                </div>
+
+                  <!-- Order Confirmation -->
+                <div id="confirm-order">
+
+                  <button type="button" class="btn btn-primary right" id="confirm">Continue </button>
+                </div>
+
+          </div>
+                
+              </div>
+            </div>
+          </div>
+
+          <button id="clear" class="btn btn-primary btn-danger right">Clear</button> 
+        </div>
+
+      </div> <br> <br>
+      
+      
+     
+      <div class="container" data>
+        <div class="row"  id="catalog">
+    
+        </div>
+      </div>
 
 
+
+    </main>
+
+
+    <!--End-->
+
+    
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-	<script src="scripts.js"></script>
-    <!-- jQuery google cdn -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+	  
+    <script src="https://deepblue.camosun.bc.ca/~c0180354/ics128/final/cookie-manager.js"></script>
+    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+   
+  
+      <!-- jQuery  cdn -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!--Masonry-->
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script> 
   </body>
 </html>
