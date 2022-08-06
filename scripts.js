@@ -5,16 +5,83 @@ class Catalog{
        this.product_data = [];
        this.products = {};
        this.load_data_from_api();
+       this.attach_event_handlers();
    }
 
    load_data_from_api(){
-       fetch(API_URL)
+       fetch(this.API_URL)
            .then(res=>res.json())
-           .then(json=>console.log(json));
+           .then(json=>{
+               this.product_data = json;
+               
+
+               for(let product of json){
+                   let product_id = product.id;
+                   this.products[product_id] = product;
+               }
+
+               this.render_catalog();
+           });
    }
+
+   render_catalog(){
+       jQuery("#catalog").html("");
+       for(let product of this.product_data){
+           var {id, title, description, image, price} = product;
+
+           let html = `<div class="col-sm-6 col-lg-4 mb-4">
+           <div class="card">
+             <img src="${image}" alt="${title}">
+
+             <div class="card-body">
+               <h5 class="card-title">${title}</h5>
+               <p class="card-text">${description}</p>
+               <button class = 'btn btn-success add-to-cart right' data-id="${id}">Add To Cart</button>
+               <p class="price">${price}</p>          
+             </div>
+           </div>
+         </div>`;
+         jQuery(html).appendTo("#catalog");
+       }
+
+         let catalog_container = document.getElementById("catalog"); // assuming your target is <div class='row' id='catalog'>
+       
+       jQuery(catalog_container).imagesLoaded( function() {
+       var msnry = new Masonry(catalog_container); // this initializes the masonry container AFTER the product images are loaded
+           msnry.layout();
+       });
+   }
+
+   
+
+   attach_event_handlers(){
+       jQuery(".price").click( function(){
+           console.log("product_id");
+       });
+       
+       jQuery("#view-cart").click( function(){
+           console.log("product_id");
+       });
+      
+      }
+
+   render_items_to_cart(){
+       let cart_contents = "";
+       var cart_items = get_cookie("shopping_cart_items");
+
+       for(let product of cart_items){
+           let product = this.get_product(product_id);
+
+           cart_contents += `<div> ${product_id} = qty of ${cart_items[product_id]} </div>`;
+       }
+
+       jQuery("#shopping-cart-contents").html(cart_contents);
+   }
+
 }
 
 let catalog = new Catalog();
+
 
 
 /**Payment Method **/
@@ -133,15 +200,17 @@ $("#billing-continue").click(function(){
        let emailID = document.querySelector("#email");
        validate(email, emailID);
 
-       let address = $("#address").val();
-       let addressID = document.querySelector("#address");
-       validate(address, addressID);
+       let addr = $("#addr").val();
+       let addressID = document.querySelector("#addr");
+       validate(addr, addressID);
 
        if(!fNameID.hasClass("is-invalid") ||
            !lNameID.hasClass("is-invalid")){
            $("#billing-details").hide();
            $("#shipping-details").show();
        }
+
+       
 });
 
 /**shipping checkbox*/
