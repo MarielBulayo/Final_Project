@@ -5,7 +5,8 @@ class Catalog{
        this.product_data = [];
        this.products = {};
        this.load_data_from_api();
-       this.attach_event_handlers();
+       
+       
    }
 
    load_data_from_api(){
@@ -13,7 +14,7 @@ class Catalog{
            .then(res=>res.json())
            .then(json=>{
                this.product_data = json;
-               
+         
 
                for(let product of json){
                    let product_id = product.id;
@@ -24,10 +25,18 @@ class Catalog{
            });
    }
 
+    get_product(product_id){
+          for(let this_product of this.produce[data]){
+              if (this_product.id == product_id){
+                  return ths_product;
+              }
+          }
+      }
+
    render_catalog(){
        jQuery("#catalog").html("");
        for(let product of this.product_data){
-           var {id, title, description, image, price} = product;
+           let {id, title, description, image, price} = product;
 
            let html = `<div class="col-sm-6 col-lg-4 mb-4">
            <div class="card">
@@ -36,7 +45,7 @@ class Catalog{
              <div class="card-body">
                <h5 class="card-title">${title}</h5>
                <p class="card-text">${description}</p>
-               <button class = 'btn btn-success add-to-cart right' data-id="${id}">Add To Cart</button>
+               <button class = 'btn btn-success add-to-cart-button right' data-id="${id}">Add To Cart</button>
                <p class="price">${price}</p>          
              </div>
            </div>
@@ -50,33 +59,52 @@ class Catalog{
        var msnry = new Masonry(catalog_container); // this initializes the masonry container AFTER the product images are loaded
            msnry.layout();
        });
-   }
 
-   
 
-   attach_event_handlers(){
-       jQuery(".price").click( function(){
-           console.log("product_id");
-       });
+       jQuery(".add-to-cart-button").click(function() {
+       // get the product id from a data attribute of the button that looks like this:
+       // Add To Cart        
+       var product_id = jQuery(this).attr("data-id"); 
+       var cart_items = get_cookie("shopping_cart_items"); // get the data stored as a "cookie"
        
-       jQuery("#view-cart").click( function(){
-           console.log("product_id");
-       });
-      
-      }
+       // initialize the cart items if it returns null
+       if (cart_items === null) {
+           cart_items = {};
+       }
+   
+       // make sure the object is defined;
+       if (cart_items[product_id] === undefined) {
+           cart_items[product_id] = 0;
+       }
+   
+       cart_items[product_id]++;
+       
+       set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage
+       console.log(cart_items);
 
-   render_items_to_cart(){
+   });
+   jQuery("#view-cart").click( function(){
        let cart_contents = "";
        var cart_items = get_cookie("shopping_cart_items");
 
-       for(let product of cart_items){
+       for(let product in cart_items){
            let product = this.get_product(product_id);
-
+           
            cart_contents += `<div> ${product_id} = qty of ${cart_items[product_id]} </div>`;
        }
 
        jQuery("#shopping-cart-contents").html(cart_contents);
+   });
+      
+
    }
+
+   
+
+   
+
+   
+       
 
 }
 
