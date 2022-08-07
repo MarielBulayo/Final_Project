@@ -1,0 +1,46 @@
+.right{
+    float: right;
+  }
+  #cart-div{
+    margin-right: 8%;
+  }
+
+  #checkout, #cancel{
+    margin: 5px;
+  }
+
+  .modal-backdrop {
+     z-index: 1;
+  }
+  a {
+    text-decoration: none;
+    color: white;
+    margin-right: 10px;
+  }
+
+  #checkout-modal{
+    display: flex;
+   justify-content: center;
+  
+  }
+  hr{
+    color: black;
+  font-size: 2px;
+  }
+
+  label{
+    font-weight: ;
+  }
+  
+
+  #billing-details,
+  #shipping-details,
+  #confirm-order,
+  #payment-method,
+  #shipping-information {
+   display: none;
+  }
+
+  .delete:hover{
+    color: red;
+  }
