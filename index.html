@@ -22,8 +22,14 @@
 		    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		  </div>
 		  <div class="offcanvas-body">
-		  		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="checkout-btn">
+		  	<div id="shopping-cart-contents">
+		  		
+		  	</div>
+		  		<button type="button" class="btn btn-primary right" data-bs-toggle="modal" data-bs-target="#exampleModal" id="checkout-btn">
 			Checkout
+			</button>
+			<button type="button" class="btn btn-danger clear-btn" >
+			Clear Cart
 			</button>
 
 		  </div>
@@ -152,7 +158,7 @@
 						    <label for="last-name" class="form-label">Last name</label>
 						    <input type="text" class="form-control" id="last-name"required>
 						    <div class="invalid-feedback">
-						      Name can't be blank
+						      Last name can't be blank
 						    </div>
 						  </div>
 
@@ -171,16 +177,16 @@
 				                Please enter your shipping address.
 				              </div>
 				          </div>
-						
-						  <div class="col-md-6">
-						    <label for="city" class="form-label">City</label>
-						    	<select class="form-control" id="city">
-						            <option>2021</option>
+				          <div class="col-md-6">
+						    <label for="country" class="form-label">Country</label>
+						    	<select class="form-control" id="country">
+						    		<option selected disabled value="">Choose...</option>
+						            <option>...</option>
 						        </select>
 						  </div>
-						  <div class="col-md-3">
-						    <label for="validationCustom04" class="form-label">State/Province</label>
-						    <select class="form-select" id="validationCustom04" required>
+							 <div class="col-md-6">
+						    <label for="state-province" class="form-label">State/Province</label>
+						    <select class="form-select" id="state-province" required>
 						      <option selected disabled value="">Choose...</option>
 						      <option>...</option>
 						    </select>
@@ -188,6 +194,13 @@
 						      Please select a valid state/province.
 						    </div>
 						  </div>
+						  <div class="col-md-6">
+						    <label for="city" class="form-label">City</label>
+						    	<select class="form-control" id="city">
+						            <option>...</option>
+						        </select>
+						  </div>
+						 
 						  <div class="col-md-3">
 						    <label for="zip" class="form-label">Zip</label>
 						    <input type="text" class="form-control" id="zip" required>

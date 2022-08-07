@@ -4,9 +4,7 @@ class Catalog{
    constructor(){
        this.product_data = [];
        this.products = {};
-       this.load_data_from_api();
-       
-       
+       this.load_data_from_api();		
    }
 
    load_data_from_api(){
@@ -16,29 +14,27 @@ class Catalog{
                this.product_data = json;
          
 
-               for(let product of json){
+               for(let product of this.product_data){
                    let product_id = product.id;
                    this.products[product_id] = product;
                }
 
                this.render_catalog();
+                
+          
            });
+       
+
    }
 
-    get_product(product_id){
-          for(let this_product of this.produce[data]){
-              if (this_product.id == product_id){
-                  return ths_product;
-              }
-          }
-      }
+   
 
    render_catalog(){
        jQuery("#catalog").html("");
        for(let product of this.product_data){
-           let {id, title, description, image, price} = product;
+           var {id, title, description, image, price} = product;
 
-           let html = `<div class="col-sm-6 col-lg-4 mb-4">
+           var html = `<div class="col-sm-6 col-lg-4 mb-4">
            <div class="card">
              <img src="${image}" alt="${title}">
 
@@ -50,18 +46,47 @@ class Catalog{
              </div>
            </div>
          </div>`;
-         jQuery(html).appendTo("#catalog");
+         jQuery(html).appendTo("#catalog");	      
        }
 
          let catalog_container = document.getElementById("catalog"); // assuming your target is <div class='row' id='catalog'>
-       
+   
        jQuery(catalog_container).imagesLoaded( function() {
        var msnry = new Masonry(catalog_container); // this initializes the masonry container AFTER the product images are loaded
            msnry.layout();
-       });
+       }); 
+       this.attach_event_handlers();	
+
+   }
+
+get_product(product_id){
+       for(let product of this.product_data){
+           if(product.id == product_id){
+               return product
+           }
+       }
+   }
 
 
-       jQuery(".add-to-cart-button").click(function() {
+cart(){
+       var cart_items = get_cookie("shopping_cart_items");
+       let cart_content= "";
+       
+       for(let product_id in cart_items){
+           let product = this.get_product(product_id);
+           let quantity =  cart_items[product_id];
+           let item_total = product.price * quantity;
+         
+           cart_content += `${product.title} has ${quantity} item/s = ${item_total}`;
+              console.log(cart_content);
+       }     
+   }
+   
+
+
+
+  attach_event_handlers(){
+   jQuery(".add-to-cart-button").click(function() {
        // get the product id from a data attribute of the button that looks like this:
        // Add To Cart        
        var product_id = jQuery(this).attr("data-id"); 
@@ -78,38 +103,36 @@ class Catalog{
        }
    
        cart_items[product_id]++;
-       
-       set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage
        console.log(cart_items);
+       set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage 
 
    });
-   jQuery("#view-cart").click( function(){
-       let cart_contents = "";
-       var cart_items = get_cookie("shopping_cart_items");
-
-       for(let product in cart_items){
-           let product = this.get_product(product_id);
-           
-           cart_contents += `<div> ${product_id} = qty of ${cart_items[product_id]} </div>`;
-       }
-
-       jQuery("#shopping-cart-contents").html(cart_contents);
-   });
-      
-
-   }
 
    
 
-   
+       jQuery(".clear-btn").click( function(){
+           let cart_contents = "";
+           set_cookie("shopping_cart_items", {});
+           jQuery("#shopping-cart-contents").html(cart_contents);
+        
+       });
+  }
+
+
+
 
    
-       
-
 }
+
+
 
 let catalog = new Catalog();
 
+
+
+$("#view-cart").click( function(){
+          catalog.cart();
+});
 
 
 /**Payment Method **/
@@ -203,8 +226,8 @@ $("#payment-continue").click(function(){
            $("#ccmonth").removeClass("is-valid");
        }
 
-       if(!name.hasClass("is-invalid") ||
-           !cardID.hasClass("is-invalid")){
+       if($(!name).hasClass("is-invalid") ||
+           $(!cardID).hasClass("is-invalid")){
            $("#billing-details").show();
            $("#payment-method").hide();
        }
@@ -232,8 +255,8 @@ $("#billing-continue").click(function(){
        let addressID = document.querySelector("#addr");
        validate(addr, addressID);
 
-       if(!fNameID.hasClass("is-invalid") ||
-           !lNameID.hasClass("is-invalid")){
+       if($(!fNameID).hasClass("is-invalid") ||
+           $(!lNameID).hasClass("is-invalid")){
            $("#billing-details").hide();
            $("#shipping-details").show();
        }
