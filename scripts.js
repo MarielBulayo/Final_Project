@@ -70,15 +70,33 @@ get_product(product_id){
 
 cart(){
        var cart_items = get_cookie("shopping_cart_items");
-       let cart_content= "";
+       let cart_content= ` <table class="table" id="product-to-buy">
+                       <thead>
+                       <tr>
+                         <th scope="col"></th>
+                         <th scope="col">Product</th>
+                         <th scope="col">Price</th>
+                         <th scope="col">Quantity</th>
+                         <th scope="col">Total</th>
+                       </tr>
+                    </thead>`;
        
        for(let product_id in cart_items){
            let product = this.get_product(product_id);
            let quantity =  cart_items[product_id];
            let item_total = product.price * quantity;
          
-           cart_content += `${product.title} has ${quantity} item/s = ${item_total}`;
-              console.log(cart_content);
+           cart_content += `<tbody class = "table-body">
+                               <tr>
+                                 <th scope="row"><i class="bi bi-trash3-fill delete"></i></th>
+                                 <td>${product.title}</td>
+                                 <td>${product.price}</td>
+                                 <td>${quantity}</td>
+                                 <td>${item_total}</td>
+                               </tr>
+                             </tbody> `;			
+
+          jQuery("#shopping-cart-contents").html(cart_content);
        }     
    }
    
@@ -103,23 +121,21 @@ cart(){
        }
    
        cart_items[product_id]++;
-       console.log(cart_items);
        set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage 
-
    });
-
-   
-
-       jQuery(".clear-btn").click( function(){
-           let cart_contents = "";
-           set_cookie("shopping_cart_items", {});
-           jQuery("#shopping-cart-contents").html(cart_contents);
-        
-       });
   }
 
 
+clear_cart(){
+    set_cookie("shopping_cart_items", {});
+    let cart_items = get_cookie("shopping_cart_items");
+   jQuery(".table-body").html(cart_items);
+   console.log(cart_items);
+}
 
+clear_item(){
+
+}
 
    
 }
@@ -131,9 +147,13 @@ let catalog = new Catalog();
 
 
 $("#view-cart").click( function(){
-          catalog.cart();
+   catalog.cart();
 });
 
+
+jQuery(".clear-btn").click( function(){
+    catalog.clear_cart();
+});
 
 /**Payment Method **/
 
