@@ -235,6 +235,18 @@ function validate(value, id){
 	}
 }
 
+function regex(value, pattern, id){
+    let new_regex = new RegExp(pattern);
+    if(!new_regex.test(value)){
+        $(id).addClass("is-invalid");
+    
+    }else{
+        $(id).addClass("is-valid");
+        $(id).removeClass("is-invalid");
+    }
+
+}
+
 /**Validate Credit Card**/
 $("#payment-continue").click(function(){
 		/**Name**/
@@ -245,24 +257,13 @@ $("#payment-continue").click(function(){
 		/**Card**/
 		let cardNum = $("#ccnumber").val();
 		let cardID = document.querySelector("#ccnumber");
-		
-		validate(cardNum, cardID);
-		console.log(cardNum);
-
 		let card_pattern = /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/;
-		let card_regex = new RegExp(card_pattern);
-		if(!card_regex.test(card_pattern)){
-			$("#cardID").addClass("is-invalid");
+	    regex(cardNum, card_pattern, cardID,);
+	
 		
-		}else{
-			$("#cardID").addClass("is-valid");
-			$("#cardID").removeClass("is-invalid");
-		}
-		
-
-		/**year**/
 		let today = new Date();
 
+        /**year**/
 		let cardyear = $("#ccyear").val();
 		let expYear = parseInt(cardyear);
 		let year = today.getFullYear();
@@ -286,32 +287,24 @@ $("#payment-continue").click(function(){
 		} else if (expYear > year){
 			$("#ccyear").addClass("is-valid");
 			$("#ccyear").removeClass("is-invalid");
+            $("#ccmonth").addClass("is-valid");
+			$("#ccmonth").removeClass("is-invalid");
 		}else{
 			$("#ccyear").addClass("is-invalid");
 			$("#ccyear").removeClass("is-valid");
-
 			$("#ccmonth").addClass("is-invalid");
 			$("#ccmonth").removeClass("is-valid");
 		}
 
 		let cvv = $("#cvv").val();
+        let cvvID = $("#cvv");
 		let cvv_pattern = /^[0-9]{3,4}$/;
-		let cvv_regex = new RegExp(cvv_pattern);
-		if(!cvv_regex.test(cvv)){
-			$("#cvv").addClass("is-invalid");
-		
-		}else{
-			$("#cvv").addClass("is-valid");
-			$("#cvv").removeClass("is-invalid");
-		}
+        regex(cvv, cvv_pattern, cvvID,);
 
-		if($(!name).hasClass("is-invalid") ||
-			$(!ccyear).hasClass("is-invalid") ||
-			$(!ccmonth).hasClass("is-invalid")||
-			$(!cvv).hasClass("is-invalid")){
-			$("#billing-details").show();
-			$("#payment-method").hide();
-		}
+        if(cvv.hasClass("is-invalid")){
+            $("#billing-details").show();
+        }
+		
 		
 	
 
