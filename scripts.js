@@ -51,7 +51,7 @@ class Catalog{
 	          <div class="card-body">
 	            <h5 class="card-title">${title}</h5>
 	            <p class="card-text">${description}</p>
-	            <button class = 'btn btn-success add-to-cart-button right' data-id="${id}">Add To Cart</button>
+	            <button class = 'btn btn-success add-to-cart-button right' data-id="${id}">Add To Cart </button>
 	            <p class="price">${price}</p>          
 	          </div>
 	        </div>
@@ -152,6 +152,7 @@ cart(){
         cart_items[product_id]++;
         set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage 
         $("#cart-items").html(count);
+        $(this).html(`Add To Cart <i class="bi bi-check-lg"></i>`);
     });    
    }
 
