@@ -240,9 +240,10 @@
 						  </div>
 						  <div class="col-md-4">
 						    <label for="city" class="form-label">City</label>
-						    	<select class="form-control" id="city">
-						            <option>...</option>
-						        </select>
+						    	<input class="form-control" id="city">
+                  <div class="invalid-feedback">
+                    Please enter city
+                  </div>
 						  </div>
 						 
 						  <div class="col-md-3">
@@ -307,24 +308,39 @@
                       Please enter your shipping address.
                     </div>
                 </div>
+                <div class="col-md-6">
+                  <label for="country-shipping" class="form-label">Country</label>
+                    <select class="form-control" id="country-shipping">
+                          <option>Canada</option>
+                      </select>
+                 </div>
 						
 						  <div class="col-md-6">
 						    <label for="city-shipping" class="form-label">City</label>
-						    	<select class="form-control" id="city-shipping">
-						            <option>City</option>
-						        </select>
+						    	<input class="form-control" id="city-shipping">
 						  </div>
-						  <div class="col-md-3">
-						    <label for="state-province" class="form-label">State/Province</label>
-						    <select class="form-select" id="state province" required>
+						  <div class="col-md-6">
+						    <label for="shipping-province" class="form-label">State/Province</label>
+						    <select class="form-select" id="shipping-province" required>
 						      <option selected disabled value="">Choose...</option>
-						      <option>...</option>
+						      <option>AB</option>
+                  <option>BC</option>
+                  <option>MB</option>
+                  <option>NB</option>
+                  <option>NL</option>
+                  <option>NS</option>
+                  <option>ON</option>
+                  <option>PE</option>
+                  <option>SK</option>
+                  <option>YT</option>
+                  <option>NT</option>
+                  <option>NU</option>
 						    </select>
 						    <div class="invalid-feedback">
 						      Please select a valid state/province.
 						    </div>
 						  </div>
-						  <div class="col-md-3">
+						  <div class="col-md-6">
 						    <label for="zip-shipping" class="form-label">Zip</label>
 						    <input type="text" class="form-control" id="zip-shipping" required>
 						    <div class="invalid-feedback">

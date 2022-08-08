@@ -216,7 +216,7 @@ $("#order").click(function(){
 });
 
 
-/**checks string value*/
+/**checks that input value is not blankgit*/
 function validate(value, id){
 
 	if(value == "" || value == undefined){
@@ -305,7 +305,7 @@ $("#payment-continue").click(function(){
 
 });
 
-
+/**when continue button in billing details is clicked */
 $("#billing-continue").click(function(){
 
 		let first_name = $("#first-name").val();
@@ -334,6 +334,10 @@ $("#billing-continue").click(function(){
         let zipID = $("#zip");
         let zip_pattern = /^(?:[ABCEGHJ-NPRSTVXY]\d[A-Z][ -]?\d[A-Z]\d)$/i;
         regex(zip, zip_pattern, zipID);
+
+        let city = $("#city").val();
+        let cityID = $("#city");
+        validate(city, cityID);
 
 		if($(fNameID).hasClass("is-valid") &&
 			$(lNameID).hasClass("is-valid") &&
@@ -382,6 +386,18 @@ checkbox.addEventListener("change", function(e) {
 			let shipping_emailID = $("#shipping-email");
             regex(shipping_email, email_pattern, shipping_emailID);
 			
+            let address = $("#address").val();
+            let addressID = $("#addres");
+            validate(address, addressID);
+
+            let city_shipping = $("#city-shipping").val();
+            let city_shippingID = $("#city-shipping");
+            validate(city_shipping, city_shippingID);
+
+            let zip_shipping = $("#zip-shipping").val();
+            let zipID_shipping = $("#zip-shipping");
+            let zip_pattern = /^(?:[ABCEGHJ-NPRSTVXY]\d[A-Z][ -]?\d[A-Z]\d)$/i;
+            regex(zip_shipping, zip_pattern, zipID_shipping);
 
             if($(shipNameID).hasClass("is-valid") && $(shipLastID).hasClass("is-valid") && $(shippingEmailID).hasClass("is-valid")){
                 $("#shipping-details").hide();
@@ -396,7 +412,6 @@ let prov = document.querySelector("#province");
 prov.addEventListener('change', function(e){
     let province =$("#province").val();
     let tax = catalog.get_gst(province) * catalog.total;
-    console.log(tax);
     let grand_total = catalog.total + catalog.shipping_rate +tax;
     let html = `<table> 
                     <tr>
