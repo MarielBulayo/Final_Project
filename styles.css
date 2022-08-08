@@ -44,3 +44,8 @@
   .delete:hover{
     color: red;
   }
+
+#view-cart:hover{
+  background-color: pink;
+  color: black;
+}

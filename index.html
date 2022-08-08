@@ -13,8 +13,13 @@
 	<h1 id="page-title">Final Project</h1>
 
 	<div id="cart-div" class="right">
+    
 		
-		<button id="view-cart" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-cart"></i> View Cart</button>
+		<button id="view-cart" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+      <span id="cart-items" class="badge badge-light6"></span>
+      <i class="bi bi-cart"></i> 
+      View Cart
+    </button>
 
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
 		  <div class="offcanvas-header">
@@ -29,7 +34,6 @@
                         <option>CAD</option>
                         <option>USD</option>
                         <option>PHP</option>
-                       
                     </select>
                 </div>
 		  		<div class="table-responsive" id="table-div" >
@@ -158,57 +162,83 @@
 			        <!-- Billing Details -->
 			        <div id="billing-details">
 			        	
-			        	  <div class="card-body">
- 
-			        	<form class="row g-3 needs-validation" novalidate>
-						  <div class="col-md-6">
-						    <label for="first-name" class="form-label">First name</label>
-						    <input type="text" class="form-control" id="first-name"required>
-						    <div class="invalid-feedback">
-						      Name can't be blank
-						    </div>
-						  </div>
-						  <div class="col-md-6">
-						    <label for="last-name" class="form-label">Last name</label>
-						    <input type="text" class="form-control" id="last-name"required>
-						    <div class="invalid-feedback">
-						      Last name can't be blank
-						    </div>
-						  </div>
+                      <div class="card-body">
+    
+                    <form class="row g-3 needs-validation" novalidate>
+                  <div class="col-md-6">
+                    <label for="first-name" class="form-label">First name</label>
+                    <input type="text" class="form-control" id="first-name"required>
+                    <div class="invalid-feedback">
+                      Name can't be blank
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="last-name" class="form-label">Last name</label>
+                    <input type="text" class="form-control" id="last-name"required>
+                    <div class="invalid-feedback">
+                      Last name can't be blank
+                    </div>
+                  </div>
 
-						  <div class="mb-3">
-				              <label for="email">Email</label>
-				              <input type="email" class="form-control" id="email" placeholder="you@example.com">
-				              <div class="invalid-feedback">
-				                Please enter a valid email address for shipping updates.
-				              </div>
-				          </div>
+                  <div class="mb-3">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                          <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                          </div>
+                      </div>
 
-				          <div class="mb-3">
-				              <label for="addr">Address</label>
-				              <input type="text" class="form-control" id="addr" placeholder="1234 Main St" required="">
-				              <div class="invalid-feedback">
-				                Please enter your shipping address.
-				              </div>
-				          </div>
-				          <div class="col-md-6">
-						    <label for="country" class="form-label">Country</label>
-						    	<select class="form-control" id="country">
-						    		<option selected disabled value="">Choose...</option>
-						            <option>...</option>
-						        </select>
-						  </div>
-							 <div class="col-md-6">
-						    <label for="state-province" class="form-label">State/Province</label>
-						    <select class="form-select" id="state-province" required>
+                      <div class="mb-3">
+                          <label for="addr">Address</label>
+                          <input type="text" class="form-control" id="addr" placeholder="1234 Main St" required="">
+                          <div class="invalid-feedback">
+                            Please enter your billing address.
+                          </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="addr">Address 2 <span class="text-secondary">(Optional)</span></label>
+                        <input type="text" class="form-control" id="addr" placeholder="1234 Main St" required="">
+                        <div class="invalid-feedback">
+                          Please enter your billing address.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="phone" class="form-label">Phone Number</label>
+                      <input type="text" class="form-control" id="phone" required>
+                      <div class="invalid-feedback">
+                        Please provide a valid valid phone number
+                      </div>
+                    </div>
+
+                      <div class="col-md-5">
+                        <label for="country" class="form-label">Country</label>
+                          <select class="form-control" id="country">
+                                <option>Canada</option>
+                            </select>
+                       </div>
+							 <div class="col-md-4">
+						    <label for="province" class="form-label">Province</label>
+						    <select class="form-select" id="province" required>
 						      <option selected disabled value="">Choose...</option>
-						      <option>...</option>
+                  <option>AB</option>
+                  <option>BC</option>
+                  <option>MB</option>
+                  <option>NB</option>
+                  <option>NL</option>
+                  <option>NS</option>
+                  <option>ON</option>
+                  <option>PE</option>
+                  <option>SK</option>
+                  <option>YT</option>
+                  <option>NT</option>
+                  <option>NU</option>
 						    </select>
 						    <div class="invalid-feedback">
 						      Please select a valid state/province.
 						    </div>
 						  </div>
-						  <div class="col-md-6">
+						  <div class="col-md-4">
 						    <label for="city" class="form-label">City</label>
 						    	<select class="form-control" id="city">
 						            <option>...</option>
@@ -226,7 +256,7 @@
 					</div> <br>
 					<button type="button" class="btn btn-primary right" id="billing-continue">Continue</button>
 
-			        </div>
+			</div>
 
 			        <!-- Shipping Details -->
 
@@ -269,6 +299,14 @@
 				                Please enter your shipping address.
 				              </div>
 				          </div>
+
+                  <div class="mb-3">
+                    <label for="address2">Address 2</label>
+                    <input type="text" class="form-control" id="address2" placeholder="1234 Main St" required="">
+                    <div class="invalid-feedback">
+                      Please enter your shipping address.
+                    </div>
+                </div>
 						
 						  <div class="col-md-6">
 						    <label for="city-shipping" class="form-label">City</label>
@@ -308,7 +346,11 @@
     	          		<div id="products">
     	          			
     	          		</div>
-    	    
+                    <hr>
+                    <div id="grand-total" class="right">
+                      
+                    </div>
+                    <br><br><br><br><br><br>
 			        	<button type="button" class="btn btn-primary right" id="place-order">Place Order</button>
 			        </div>
 

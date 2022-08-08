@@ -1,15 +1,16 @@
 class Catalog{
 	API_URL = 'https://fakestoreapi.com/products';
- 	
 	CURRENCY_API = 'https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/cad.json';
 
 	constructor(){
-		this.currency = {};
+		this.currency = [];
+        this.curr = {};
 		this.product_data = [];
 		this.products = {};
-		this.load_data_from_api();	
-
-
+		this.load_data_from_api();
+        this.total= "";	
+        this.items = "";
+        this.shipping_rate = 40.48;
 	}
 
 	load_data_from_api(){
@@ -22,27 +23,21 @@ class Catalog{
             		let product_id = product.id;
             		this.products[product_id] = product;
             	}
-            
-            	this.render_catalog();
-           
-           			
+            	this.render_catalog(); 	
+                this.fetch_currency();		
             });     
 	}
 
-
-
-	get_date(currentDate){
-		currentDate = new Date();
-		let day = currentDate.getDate();
-		let month = currentDate.getMonth() + 1;
-		let year = currentDate.getFullYear();
-		let today = new Date().toISOString().split('T');
-		let date_today = today[0];
-		return date_today;
-	}
-
-
-	
+	fetch_currency(){
+        fetch(this.CURRENCY_API)
+            .then(res=>res.json())
+            .then(json=>{
+            	this.currency = json;
+                for(let val in this.currency.cad){
+            		this.curr[val]= val;
+            	}
+            }); 
+    }
 	
 	render_catalog(){
 	    jQuery("#catalog").html("");
@@ -63,7 +58,6 @@ class Catalog{
 	      </div>`;
 	      jQuery(html).appendTo("#catalog");	      
 	    }
-
 	  	let catalog_container = document.getElementById("catalog"); // assuming your target is <div class='row' id='catalog'>
 	
 		jQuery(catalog_container).imagesLoaded( function() {
@@ -81,7 +75,6 @@ class Catalog{
 		}
 	}
 
-
 cart(){
 		var cart_items = get_cookie("shopping_cart_items");
 		let cart_content= ` <table class="table" id="product-to-buy">
@@ -95,6 +88,7 @@ cart(){
 					    </tr>
 					 </thead>`;
 		var total = 0;
+        var contentID = 0;
 		for(let product_id in cart_items){
 			let product = this.get_product(product_id);
             let quantity =  cart_items[product_id];
@@ -102,16 +96,15 @@ cart(){
           
             cart_content += `<tbody class = "table-body">
 							    <tr>
-							      <th scope="row"><i class="bi bi-trash3-fill delete"></i></th>
+							      <th scope="row"><i class="bi bi-trash3-fill delete" id ="${contentID}++" ></i></th>
 							      <td>${product.title}</td>
 							      <td>${product.price}</td>
 							      <td>${quantity}</td>
 							      <td>${item_total}</td>
 							    </tr>`;
 			total += item_total;
-					
-        } 
-
+           	
+        } 		
         	cart_content +=  ` <tr>
 							    	<th> Total </th>
 							    	<td></td>
@@ -123,24 +116,26 @@ cart(){
 		  
          jQuery("#table-div").html(cart_content);
          jQuery("#products").html(cart_content);
-
-         
-		
-                 
-	}
-	
-
-	confirm_order(){
-		let order = cart();
-		jQuery("#confirm_order").html(order);
+         this.total = parseInt(total);
 	}
 
-
+   get_gst(province){        
+      if (province == "ON"){
+        return 13;
+      }else if (province == "NS" || province == "NB"|| province == "NL"||province == "PE" ){
+        return 15;
+      }else{
+        return 0.05;
+      }
+      
+   }
 
    attach_event_handlers(){
+    var count = 0;
     jQuery(".add-to-cart-button").click(function() {
         // get the product id from a data attribute of the button that looks like this:
-        // Add To Cart        
+        // Add To Cart  
+       count++;    
         var product_id = jQuery(this).attr("data-id"); 
         var cart_items = get_cookie("shopping_cart_items"); // get the data stored as a "cookie"
         
@@ -156,35 +151,34 @@ cart(){
     
         cart_items[product_id]++;
         set_cookie("shopping_cart_items", cart_items); // setting the cart items back to the "cookie" storage 
-    });
+        $("#cart-items").html(count);
+    });    
    }
 
-
  clear_cart(){
+    let count = 0;
  	set_cookie("shopping_cart_items", {});
  	let cart_items = get_cookie("shopping_cart_items");
 	jQuery(".table-body").html(cart_items);
-	console.log(cart_items);
+    $("#cart-items").html(count);
  }
 
 }
 
 let catalog = new Catalog();
 
-
 $("#view-cart").click( function(){
     catalog.cart();
-});
 
+});
 
 jQuery(".clear-btn").click( function(){
  	catalog.clear_cart();
+    
 });
 
 
-
 /**Payment Method **/
-
 $("#checkout-btn").click(function(){
 	$("#payment-method").show();
 	$("#confirm-order").hide();
@@ -234,7 +228,7 @@ function validate(value, id){
 			$(id).removeClass("is-invalid");
 	}
 }
-
+/**Regex funtion to validate input */
 function regex(value, pattern, id){
     let new_regex = new RegExp(pattern);
     if(!new_regex.test(value)){
@@ -267,33 +261,33 @@ $("#payment-continue").click(function(){
 		let cardyear = $("#ccyear").val();
 		let expYear = parseInt(cardyear);
 		let year = today.getFullYear();
-
+        let yearID = $("#ccyear");
 		/**Month**/
 		let cardmonth = $("#ccmonth").val();
 		let month = today.getMonth()+1;
 		let expMonth = parseInt(cardmonth);
-
+        let monthID = $("#ccmonth");
 
 		if(expYear == year){
-			$("#ccyear").addClass("is-valid");
-			$("#ccyear").removeClass("is-invalid");
+			yearID.addClass("is-valid");
+			yearID.removeClass("is-invalid");
 			if(month <= expMonth){
-				$("#ccmonth").addClass("is-valid");
-				$("#ccmonth").removeClass("is-invalid");
+				$(monthID).addClass("is-valid");
+				$(monthID).removeClass("is-invalid");
 			}else{
-				$("#ccmonth").addClass("is-invalid");
-				$("#ccmonth").removeClass("is-valid");
+				$(monthID).addClass("is-invalid");
+				$(monthID).removeClass("is-valid");
 			}
 		} else if (expYear > year){
-			$("#ccyear").addClass("is-valid");
-			$("#ccyear").removeClass("is-invalid");
-            $("#ccmonth").addClass("is-valid");
-			$("#ccmonth").removeClass("is-invalid");
+			$(yearID).addClass("is-valid");
+			$(yearID).removeClass("is-invalid");
+            $(monthID).addClass("is-valid");
+			$(monthID).removeClass("is-invalid");
 		}else{
-			$("#ccyear").addClass("is-invalid");
-			$("#ccyear").removeClass("is-valid");
-			$("#ccmonth").addClass("is-invalid");
-			$("#ccmonth").removeClass("is-valid");
+			$(yearID).addClass("is-invalid");
+			$(yearID).removeClass("is-valid");
+			$(monthID).addClass("is-invalid");
+			$(monthID).removeClass("is-valid");
 		}
 
 		let cvv = $("#cvv").val();
@@ -301,12 +295,13 @@ $("#payment-continue").click(function(){
 		let cvv_pattern = /^[0-9]{3,4}$/;
         regex(cvv, cvv_pattern, cvvID,);
 
-        if(cvv.hasClass("is-invalid")){
-            $("#billing-details").show();
-        }
-		
-		
-	
+        if($(cvvID).hasClass("is-valid") &&
+            $(cardID).hasClass("is-valid") &&
+            $(yearID).hasClass("is-valid") &&
+            $(monthID).hasClass("is-valid")){
+                $("#payment-method").hide();
+                $("#billing-details").show();
+        }	
 
 });
 
@@ -323,49 +318,53 @@ $("#billing-continue").click(function(){
 
 		let email = $("#email").val();
 		let emailID = document.querySelector("#email");
-	
-
 		let email_pattern  = /^\S+@\S+$/;
-		let email_regex = new RegExp(email_pattern);
-
-		if(!email_regex.test(email)){
-			$("#email").addClass("is-invalid");
-		
-		}else{
-			$("#email").addClass("is-valid");
-			$("#email").removeClass("is-invalid");
-		}
-
+        regex(email, email_pattern, emailID);
 
 		let addr = $("#addr").val();
 		let addressID = document.querySelector("#addr");
 		validate(addr, addressID);
 
-		if($(!fNameID).hasClass("is-invalid") ||
-			$(!lNameID).hasClass("is-invalid")){
-			$("#billing-details").hide();
-			$("#shipping-details").show();
+        let phone = $("#phone").val();
+        let phone_pattern = /^\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})$/;
+        let phoneID = $("#phone");
+        regex(phone, phone_pattern, phoneID);
+
+        let zip = $("#zip").val();
+        let zipID = $("#zip");
+        let zip_pattern = /^(?:[ABCEGHJ-NPRSTVXY]\d[A-Z][ -]?\d[A-Z]\d)$/i;
+        regex(zip, zip_pattern, zipID);
+
+		if($(fNameID).hasClass("is-valid") &&
+			$(lNameID).hasClass("is-valid") &&
+            $(emailID).hasClass("is-valid") &&
+            $(addressID).hasClass("is-valid")){
+                $("#billing-details").hide();
+                $("#shipping-details").show();
 		}
 
 		
 });
 
 /**shipping checkbox*/
-
 let checkbox = document.querySelector("#shipping-checkbox");
+
+
 if (checkbox.checked) {
-        $("#shipping-continue").click(function(){
-        	$("#shipping-details").hide();
-        	  $("#confirm-order").show();
-        });
-    } 
+    $("#shipping-information").hide();
+
+    $("#shipping-continue").click(function(){
+        $("#shipping-details").hide();
+        $("#confirm-order").show();
+    });
+}
 checkbox.addEventListener("change", function(e) {
     if (checkbox.checked) {
         $("#shipping-information").hide();
 
         $("#shipping-continue").click(function(){
         	$("#shipping-details").hide();
-        	  $("#confirm-order").show();
+        	$("#confirm-order").show();
         });
     } else {
     	$("#shipping-information").show();
@@ -380,25 +379,49 @@ checkbox.addEventListener("change", function(e) {
 
 			let shipping_email = $("#email-shipping").val();
 			let email_pattern  = /^\S+@\S+$/;
-			let email_regex = new RegExp(email_pattern);
-
-			if(!email_regex.test(shipping_email)){
-				$("#email-shipping").addClass("is-invalid");
+			let shipping_emailID = $("#shipping-email");
+            regex(shipping_email, email_pattern, shipping_emailID);
 			
-			}else{
-				$("#email-shipping").addClass("is-valid");
-				$("#email-shipping").removeClass("is-invalid");
-			}
+
+            if($(shipNameID).hasClass("is-valid") && $(shipLastID).hasClass("is-valid") && $(shippingEmailID).hasClass("is-valid")){
+                $("#shipping-details").hide();
+                $("#confirm-order").show();
+            }
 		});
     }
 });
 
-	
 
-
-
-
-
-
+let prov = document.querySelector("#province");
+prov.addEventListener('change', function(e){
+    let province =$("#province").val();
+    let tax = catalog.get_gst(province) * catalog.total;
+    console.log(tax);
+    let grand_total = catalog.total + catalog.shipping_rate +tax;
+    let html = `<table> 
+                    <tr>
+                    <th>Sub Total: </th>
+                    <th></th>
+                    <th>${catalog.total}</th>
+                    </tr> 
+                    <tr>
+                    <th>Tax:</th>
+                    <th></th>
+                    <th>${tax}</th>
+                    </tr> 
+                    <tr>
+                    <th>Shipping: </th>
+                    <th></th>
+                    <th>${catalog.shipping_rate}</th>
+                    </tr> 
+                    </tr> 
+                    <tr>
+                    <th>Total: </th>
+                    <th></th>
+                    <th>${grand_total}</th>
+                    </tr>
+                </table>`;
+    $("#grand-total").html(html);
+});
 
 
